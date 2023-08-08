@@ -115,9 +115,7 @@ dependencies = [
  "dotenv",
  "ethers",
  "eyre",
- "serde",
  "tokio",
- "toml",
 ]
 
 [[package]]
