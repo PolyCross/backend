@@ -2,9 +2,9 @@ mod abi;
 use abi::Bridge;
 mod event;
 use event::BridgeIn;
+mod addr;
+use addr::{get_addr, Network};
 mod client;
-mod get_address;
-use get_address::get_contract_address;
 mod wallet;
 use wallet::get_wallet;
 
@@ -13,19 +13,19 @@ use std::sync::Arc;
 
 #[tokio::main]
 async fn main() -> eyre::Result<()> {
-    let sepolia_client = client::get_sepolia_client().await.unwrap();
+    let sepolia_client = client::get_sepolia_client().await;
 
-    let sepolia_address: Address = get_contract_address("sepolia").await.unwrap();
+    let sepolia_address: Address = get_addr(Network::Sepolia);
 
     let sepolia_contract = Bridge::new(sepolia_address, Arc::new(sepolia_client));
 
     // Connect to the mumbai client and get the contract address from the configuration
-    let mumbai_provider = client::get_mumbai_provider().await.unwrap();
+    let mumbai_provider = client::get_mumbai_provider();
 
-    let mumbai_address: Address = get_contract_address("mumbai").await.unwrap();
+    let mumbai_address: Address = get_addr(Network::Mumbai);
 
     // Create a client with the wallet as the signer middleware
-    let wallet = get_wallet().await.unwrap();
+    let wallet = get_wallet(Chain::PolygonMumbai);
     let client = SignerMiddleware::new(mumbai_provider, wallet);
 
     // Create a contract instance from the address and client with relevant ABI
