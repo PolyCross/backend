@@ -39,7 +39,7 @@ async fn bridge() -> eyre::Result<()> {
     let mumbai_contract = Bridge::new(mumbai_address, Arc::new(client));
 
     let events = sepolia_contract.event::<BridgeIn>();
-    // let mut event_stream = events.subscribe_with_meta().await?;
+    
     let mut event_stream = events.subscribe().await?;
 
     while let Some(Ok(event)) = event_stream.next().await {
@@ -82,7 +82,7 @@ async fn bridge_swap() -> eyre::Result<()> {
     let mumbai_contract = BridgeSwap::new(mumbai_address, Arc::new(client));
 
     let events = sepolia_contract.event::<BridgeSwapIn>();
-    // let mut event_stream = events.subscribe_with_meta().await?;
+    
     let mut event_stream = events.subscribe().await?;
 
     while let Some(Ok(event)) = event_stream.next().await {
