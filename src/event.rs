@@ -11,3 +11,11 @@ pub struct BridgeIn {
     pub token: Address,
     pub amount: U256,
 }
+
+#[derive(Clone, Debug, EthEvent)]
+pub struct BridgeSwapIn {
+    pub path: Vec<Address>,
+    pub amountin: U256,
+    #[ethevent(indexed)]
+    pub receiver: Address
+}
